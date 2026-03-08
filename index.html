@@ -124,6 +124,9 @@ body.open #fold{opacity:1;pointer-events:all;transform:none;}
 .ff label{font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--dim2);}
 .ff input,.ff textarea{background:transparent;border:none;border-bottom:1px solid rgba(255,255,255,.07);color:var(--text);font-family:'DM Sans',sans-serif;font-size:.83rem;font-weight:300;padding:.5rem .15rem;outline:none;resize:none;transition:border-color .2s;cursor:text;}
 .ff input:focus,.ff textarea:focus{border-color:var(--gold);}
+.ff.err input,.ff.err textarea{border-color:var(--red);}
+.ferr{font-size:.56rem;letter-spacing:.1em;color:var(--red);opacity:0;max-height:0;overflow:hidden;transition:opacity .2s,max-height .2s;}
+.ff.err .ferr{opacity:1;max-height:2rem;}
 .ff input::placeholder,.ff textarea::placeholder{color:var(--dim);}
 .ff textarea{min-height:88px;line-height:1.6;}
 .ff2{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
@@ -321,10 +324,10 @@ footer a:hover{color:var(--gold);}
       -->
       <form class="cf" id="cf">
         <div class="ff2">
-          <div class="ff"><label for="fn">Vorname</label><input id="fn" name="vorname" type="text" placeholder="Max" required></div>
-          <div class="ff"><label for="ln">Nachname</label><input id="ln" name="nachname" type="text" placeholder="Mustermann" required></div>
+          <div class="ff" id="ff-fn"><label for="fn">Vorname</label><input id="fn" name="vorname" type="text" placeholder="Max" autocomplete="given-name"><span class="ferr">Bitte Vorname eingeben</span></div>
+          <div class="ff" id="ff-ln"><label for="ln">Nachname</label><input id="ln" name="nachname" type="text" placeholder="Mustermann" autocomplete="family-name"><span class="ferr">Bitte Nachname eingeben</span></div>
         </div>
-        <div class="ff"><label for="em">E-Mail</label><input id="em" name="email" type="email" placeholder="max@unternehmen.de" required></div>
+        <div class="ff" id="ff-em"><label for="em">E-Mail</label><input id="em" name="email" type="text" placeholder="max@unternehmen.de" autocomplete="email"><span class="ferr" id="em-err">Bitte E-Mail eingeben</span></div>
         <div class="ff" id="topic-wrap" style="display:none;">
           <label>Ausgew&auml;hlte Themen</label>
           <div id="topic-tags"></div>
@@ -337,9 +340,8 @@ footer a:hover{color:var(--gold);}
     </div>
   </section>
   <footer>
-    <div style="font-family:'Fraunces',serif;font-size:1rem;display:flex;align-items:center;gap:.5rem;">
+    <div style="display:flex;align-items:center;">
       <img src="assets/logo.png" alt="" style="width:18px;filter:invert(1);opacity:.5;">
-      <span class="ms">MS</span><span class="con">Con</span>
     </div>
     <p>&copy; 2026 MSCon &middot; IT-Architektur &amp; Digitale Transformation</p>
     <p><a href="#">Impressum</a> &nbsp;&middot;&nbsp; <a href="#">Datenschutz</a></p>
@@ -486,6 +488,11 @@ window.addEventListener('scroll', function() {
   });
 }, {passive:true});
 
+// -- SCROLL HINT HIDE --
+(new IntersectionObserver(function(e) {
+  if (e[0].isIntersecting) document.getElementById('sh').classList.remove('on');
+}, { threshold: 0.05 })).observe(document.getElementById('bento'));
+
 // -- SCRAMBLE --
 var CH = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*';
 var BL = '\u00b7\u2013\u2014\u2026\u2020\u2021\u00ab\u00bb';
@@ -572,7 +579,7 @@ function syncContact() {
     card.style.setProperty('--my', ((e.clientY-r.top)/r.height*100).toFixed(1)+'%');
   });
 
-  var obj = { card: card, plain: plain, bd: bd, on: false, name: cardNames[cards.length] };
+  var obj = { card: card, plain: plain, bd: bd, on: false, name: cardNames[cards.length], color: card.classList.contains('cg') ? '#E8A030' : card.classList.contains('cr2') ? '#9B2335' : '#7A8C3A' };
 
   // hover: temporary decrypt
   card.addEventListener('mouseenter', function() {
@@ -617,13 +624,32 @@ function tog(idx) {
 // Replace YOUR_FORM_ID with your Formspree form ID from https://formspree.io
 var FORMSPREE_ID = 'xvzwgbzg';
 
+function setErr(id, msg) {
+  var wrap = document.getElementById(id);
+  if (msg) {
+    wrap.classList.add('err');
+    if (msg !== true) wrap.querySelector('.ferr').textContent = msg;
+  } else {
+    wrap.classList.remove('err');
+  }
+}
+['fn','ln','em'].forEach(function(id) {
+  document.getElementById(id).addEventListener('input', function() { setErr('ff-'+id, false); });
+});
+
 document.getElementById('cf').addEventListener('submit', function(e) {
   e.preventDefault();
   var form = this, btn = document.getElementById('sbtn');
-  if (FORMSPREE_ID === 'YOUR_FORM_ID') {
-    btn.textContent = 'Formspree ID fehlt \u2014 siehe Code-Kommentar';
-    return;
-  }
+  var fn = document.getElementById('fn').value.trim();
+  var ln = document.getElementById('ln').value.trim();
+  var em = document.getElementById('em').value.trim();
+  var valid = true;
+  setErr('ff-fn', false); setErr('ff-ln', false); setErr('ff-em', false);
+  if (!fn) { setErr('ff-fn', true); valid = false; }
+  if (!ln) { setErr('ff-ln', true); valid = false; }
+  if (!em) { setErr('ff-em', 'Bitte E-Mail eingeben'); valid = false; }
+  else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) { setErr('ff-em', 'Bitte g\xfcltige E-Mail-Adresse eingeben'); valid = false; }
+  if (!valid) { document.querySelector('.ff.err input').focus(); return; }
   btn.textContent = 'Sende\u2026';
   btn.disabled = true;
   fetch('https://formspree.io/f/' + FORMSPREE_ID, {
@@ -637,6 +663,134 @@ document.getElementById('cf').addEventListener('submit', function(e) {
     btn.textContent = 'Fehler \u2014 erneut versuchen'; btn.disabled = false;
   });
 });
+
+// -- COLOR BLAST --
+(function() {
+  var cv = document.createElement('canvas');
+  cv.style.cssText = 'position:fixed;inset:0;z-index:9997;pointer-events:none;';
+  document.body.appendChild(cv);
+  var ctx = cv.getContext('2d');
+  function resize() { cv.width = innerWidth; cv.height = innerHeight; }
+  resize();
+  window.addEventListener('resize', resize);
+
+  var pts = [];
+
+  function activeColors() {
+    var cols = cards.filter(function(c) { return c.on; }).map(function(c) { return c.color; });
+    return cols.length ? cols : ['#E8A030'];
+  }
+
+  function hexToRgb(h) {
+    var r = parseInt(h.slice(1,3),16), g = parseInt(h.slice(3,5),16), b = parseInt(h.slice(5,7),16);
+    return r+','+g+','+b;
+  }
+
+  document.addEventListener('click', function(e) {
+    var tag = e.target.tagName;
+    if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+    if (!document.body.classList.contains('open') || unlocked === 0) return;
+    var cols = activeColors();
+    var cx = e.clientX, cy = e.clientY;
+
+    // shockwave rings (2 of them, staggered)
+    pts.push({ t:'ring', x:cx, y:cy, r:2, speed:320, maxR:140, a:0.65, lw:1.2, col:cols[0], delay:0 });
+    pts.push({ t:'ring', x:cx, y:cy, r:2, speed:200, maxR:90,  a:0.35, lw:0.7, col:cols[cols.length>1?1:0], delay:0.05 });
+
+    // main particles
+    var n = 24 + Math.floor(Math.random()*8);
+    for (var i = 0; i < n; i++) {
+      var angle = (Math.PI*2*i/n) + (Math.random()-.5)*.5;
+      var spd = 100 + Math.random()*280;
+      var col = cols[Math.floor(Math.random()*cols.length)];
+      var sz = 1.8 + Math.random()*5.5;
+      pts.push({ t:'dot', x:cx, y:cy,
+        vx:Math.cos(angle)*spd, vy:Math.sin(angle)*spd - 40,
+        a:0.9+Math.random()*.1, sz:sz, col:col,
+        life:0, maxLife:0.5+Math.random()*.55 });
+    }
+
+    // sparkle streaks
+    for (var j = 0; j < 10; j++) {
+      var angle = Math.random()*Math.PI*2;
+      var spd = 50 + Math.random()*100;
+      pts.push({ t:'streak', x:cx, y:cy,
+        vx:Math.cos(angle)*spd, vy:Math.sin(angle)*spd - 70,
+        a:1, sz:0.8+Math.random()*.8,
+        col:cols[Math.floor(Math.random()*cols.length)],
+        life:0, maxLife:0.7+Math.random()*.4 });
+    }
+  });
+
+  var lastT = null;
+  function tick(ts) {
+    requestAnimationFrame(tick);
+    if (!lastT) { lastT = ts; return; }
+    var dt = Math.min((ts - lastT)/1000, 0.05);
+    lastT = ts;
+    if (!pts.length) return;
+    ctx.clearRect(0, 0, cv.width, cv.height);
+
+    pts = pts.filter(function(p) {
+      if (p.t === 'ring') {
+        p.delay -= dt; if (p.delay > 0) return true;
+        p.r += p.speed * dt;
+        p.a -= 1.8 * dt;
+        if (p.a <= 0 || p.r > p.maxR) return false;
+        ctx.save();
+        ctx.globalAlpha = p.a;
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+        ctx.strokeStyle = p.col; ctx.lineWidth = p.lw; ctx.stroke();
+        ctx.restore();
+        return true;
+      }
+
+      p.life += dt;
+      var prog = p.life / p.maxLife;
+      if (prog >= 1) return false;
+      p.x += p.vx*dt; p.y += p.vy*dt;
+      p.vy += 240*dt;
+      p.vx *= Math.pow(0.92, dt*60);
+
+      var fade = 1 - prog*prog*prog;
+      var alpha = p.a * fade;
+      var sz = p.sz * (1 - prog*0.35);
+      var rgb = hexToRgb(p.col);
+
+      ctx.save();
+
+      if (p.t === 'streak') {
+        ctx.globalAlpha = Math.max(0, alpha * 0.9);
+        ctx.strokeStyle = 'rgba('+rgb+',1)';
+        ctx.lineWidth = sz*1.6;
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+        ctx.moveTo(p.x - p.vx*dt*3, p.y - p.vy*dt*3);
+        ctx.lineTo(p.x, p.y);
+        ctx.stroke();
+      } else {
+        // glow halo
+        var gr = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, sz*2.8);
+        gr.addColorStop(0,   'rgba('+rgb+','+Math.min(1,alpha*.9)+')');
+        gr.addColorStop(0.4, 'rgba('+rgb+','+Math.min(1,alpha*.4)+')');
+        gr.addColorStop(1,   'rgba('+rgb+',0)');
+        ctx.globalAlpha = 1;
+        ctx.fillStyle = gr;
+        ctx.beginPath(); ctx.arc(p.x, p.y, sz*2.8, 0, Math.PI*2); ctx.fill();
+        // solid core
+        ctx.globalAlpha = Math.max(0, alpha);
+        ctx.fillStyle = 'rgba('+rgb+',1)';
+        ctx.beginPath(); ctx.arc(p.x, p.y, Math.max(0.1, sz*0.6), 0, Math.PI*2); ctx.fill();
+      }
+
+      ctx.restore();
+      return true;
+    });
+
+    if (!pts.length) ctx.clearRect(0, 0, cv.width, cv.height);
+  }
+  requestAnimationFrame(tick);
+})();
 </script>
 </body>
 </html>

@@ -63,7 +63,6 @@ canvas{position:fixed;inset:0;z-index:0;}
 
 #tagline{font-family:'DM Sans',sans-serif;font-size:.65rem;letter-spacing:.22em;text-transform:uppercase;color:var(--dim2);margin-top:1rem;text-align:center;opacity:0;animation:fadein 1s ease forwards 1.8s;transition:opacity .3s;}
 #status{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.1em;color:var(--gold);margin-top:2.5rem;text-align:center;opacity:0;animation:fadein 1s ease forwards 2.4s;}
-.dots{display:inline-block;}
 
 #contact{position:fixed;bottom:2.5rem;left:0;right:0;text-align:center;font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.14em;color:var(--dim);z-index:10;opacity:0;animation:fadein 1s ease forwards 3.2s;}
 #contact a{color:var(--dim);text-decoration:none;transition:color .2s;}
@@ -95,7 +94,7 @@ canvas{position:fixed;inset:0;z-index:0;}
     </div>
   </div>
   <div id="tagline"></div>
-  <div id="status"><span id="status-text"></span> <span class="dots"></span></div>
+  <div id="status"><span id="spinner" aria-hidden="true"></span> <span id="status-text"></span></div>
 </div>
 
 <div id="contact">
@@ -383,10 +382,11 @@ var fog = document.getElementById('fog');
   logo.addEventListener('animationiteration', function(e) { if(e.animationName==='glitch-anim') setTimeout(onGlitch, OFFSET); });
 })();
 
-// -- DOTS --
-var dots = document.querySelector('.dots');
-var d = 0;
-setInterval(function() { d = (d+1)%4; dots.textContent = Array(d+1).join('.'); }, 480);
+// -- SPINNER --
+var spinFrames = ['⠋','⠙','⠹','⠸','⠼','⠴','⠦','⠧','⠇','⠏'];
+var spinEl = document.getElementById('spinner');
+var si = 0;
+setInterval(function(){ spinEl.textContent = spinFrames[si++ % spinFrames.length]; }, 100);
 </script>
 </body>
 </html>

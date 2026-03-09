@@ -40,7 +40,7 @@ footer a:hover{color:var(--gold);}
 </div>
 
 <div class="page">
-  <a class="back" href="/">&#8592; mscon.one</a>
+  <a class="back" href="/" onclick="event.preventDefault();history.back();">&#8592; mscon.one</a>
 
   <h1 id="t-title">Impressum</h1>
   <p class="subtitle" id="t-subtitle">Angaben gem&auml;&szlig; &sect;5 TMG</p>
@@ -89,7 +89,7 @@ footer a:hover{color:var(--gold);}
 
   <footer>
     <span>&copy; 2026 MSCon &middot; IT-Architektur &amp; Digitale Transformation</span>
-    <span><a href="impressum.html">Impressum</a> &nbsp;&middot;&nbsp; <a href="datenschutz.html" id="t-ds-link">Datenschutz</a></span>
+    <span><a href="impressum.html" id="t-self-link">Impressum</a> &nbsp;&middot;&nbsp; <a href="datenschutz.html" id="t-ds-link">Datenschutz</a></span>
   </footer>
 </div>
 
@@ -108,10 +108,11 @@ var i18n = {
     'liability-2': 'Die Website enth\u00e4lt m\u00f6glicherweise Links zu externen Websites Dritter, auf deren Inhalte ich keinen Einfluss habe. Zum Zeitpunkt der Verlinkung waren keine Rechtsverst\u00f6\u00dfe erkennbar. Bei Bekanntwerden von Rechtsverletzungen werden entsprechende Links umgehend entfernt.',
     h6: 'Urheberrecht',
     copyright: 'Die durch den Seitenbetreiber erstellten Inhalte und Werke auf dieser Website unterliegen dem deutschen Urheberrecht. Eine Vervielf\u00e4ltigung, Bearbeitung, Verbreitung oder Verwertung au\u00dferhalb der Grenzen des Urheberrechts bedarf der schriftlichen Zustimmung des jeweiligen Autors.',
-    'ds-link': 'Datenschutz'
+    'ds-link': 'Datenschutz',
+    'self-link': 'Impressum'
   },
   en: {
-    title: 'Legal Notice',
+    title: 'Imprint',
     subtitle: 'Information according to \u00a75 TMG (German Telemedia Act)',
     h1: 'Service Provider',
     h2: 'Contact',
@@ -123,7 +124,8 @@ var i18n = {
     'liability-2': 'This website may contain links to external third-party websites over whose content I have no control. No legal violations were apparent at the time of linking. Upon notification of any such violations, the respective links will be removed immediately.',
     h6: 'Copyright',
     copyright: 'The content and works on this website are subject to German copyright law. Reproduction, editing, distribution or any form of exploitation outside the limits of copyright law requires the written consent of the respective author.',
-    'ds-link': 'Privacy Policy'
+    'ds-link': 'Privacy',
+    'self-link': 'Imprint'
   }
 };
 

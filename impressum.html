@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Impressum &ndash; MSCon</title>
+<title>Impressum – MSCon</title>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,200;1,9..144,300&family=DM+Sans:wght@200;300;400;500&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
@@ -12,37 +12,41 @@ html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'D
 h1,h2{font-family:'Fraunces',Georgia,serif;font-weight:300;}
 a{color:var(--gold);text-decoration:none;}
 a:hover{text-decoration:underline;}
-
 .page{max-width:740px;margin:0 auto;padding:48px 24px 80px;}
-
 .back{display:inline-flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dim2);margin-bottom:48px;transition:color .2s;}
 .back:hover{color:var(--gold);text-decoration:none;}
-
 h1{font-size:clamp(1.8rem,4vw,2.8rem);margin-bottom:8px;}
 .subtitle{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:var(--dim2);margin-bottom:48px;}
-
 .divider{border:none;border-top:1px solid var(--border);margin:36px 0;}
-
 h2{font-size:1rem;font-family:'JetBrains Mono',monospace;font-weight:400;letter-spacing:.1em;text-transform:uppercase;color:var(--dim2);margin-bottom:12px;}
-
 p{color:rgba(240,236,228,.75);margin-bottom:8px;}
 p:last-child{margin-bottom:0;}
-
 footer{margin-top:80px;padding-top:24px;border-top:1px solid var(--border);display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center;font-size:.78rem;color:var(--dim2);}
 footer a{color:var(--dim2);}
 footer a:hover{color:var(--gold);}
+#lang-toggle{position:fixed;top:1.6rem;right:2rem;display:flex;align-items:center;gap:.4rem;z-index:100;}
+#lang-toggle button{background:transparent;border:none;font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.12em;color:var(--dim2);cursor:pointer;padding:0;transition:color .2s;}
+#lang-toggle button.active{color:var(--gold);}
+#lang-toggle button:hover:not(.active){color:var(--text);}
+.lang-sep{font-size:.58rem;color:var(--dim2);}
 </style>
 </head>
 <body>
-<div class="page">
 
+<div id="lang-toggle">
+  <button id="btn-de" onclick="setLang('de')">DE</button>
+  <span class="lang-sep">/</span>
+  <button id="btn-en" onclick="setLang('en')">EN</button>
+</div>
+
+<div class="page">
   <a class="back" href="/">&#8592; mscon.one</a>
 
-  <h1>Impressum</h1>
-  <p class="subtitle">Angaben gem&auml;&szlig; &sect;5 TMG</p>
+  <h1 id="t-title">Impressum</h1>
+  <p class="subtitle" id="t-subtitle">Angaben gem&auml;&szlig; &sect;5 TMG</p>
 
   <section>
-    <h2>Diensteanbieter</h2>
+    <h2 id="t-h1">Diensteanbieter</h2>
     <p>Mark Schultes</p>
     <p>Aachener Str. 19 b<br>52349 D&uuml;ren</p>
   </section>
@@ -50,44 +54,101 @@ footer a:hover{color:var(--gold);}
   <hr class="divider">
 
   <section>
-    <h2>Kontakt</h2>
+    <h2 id="t-h2">Kontakt</h2>
     <p>E-Mail: <a href="mailto:schultes@mscon.one">schultes@mscon.one</a></p>
   </section>
 
   <hr class="divider">
 
   <section>
-    <h2>Steuerliche Angaben</h2>
-    <p>Steuernummer: 207/5223/3353</p>
+    <h2 id="t-h3">Steuerliche Angaben</h2>
+    <p><span id="t-tax-label">Steuernummer</span>: 207/5223/3353</p>
   </section>
 
   <hr class="divider">
 
   <section>
-    <h2>Verantwortlich f&uuml;r den Inhalt nach &sect;18 Abs. 2 MStV</h2>
+    <h2 id="t-h4">Verantwortlich f&uuml;r den Inhalt nach &sect;18 Abs. 2 MStV</h2>
     <p>Mark Schultes<br>Aachener Str. 19 b, 52349 D&uuml;ren</p>
   </section>
 
   <hr class="divider">
 
   <section>
-    <h2>Haftungsausschluss</h2>
-    <p>Die Inhalte dieser Website wurden mit gr&ouml;&szlig;ter Sorgfalt erstellt. F&uuml;r die Richtigkeit, Vollst&auml;ndigkeit und Aktualit&auml;t der Inhalte wird keine Gew&auml;hr &uuml;bernommen. Als Diensteanbieter bin ich gem&auml;&szlig; &sect;7 Abs. 1 TMG f&uuml;r eigene Inhalte nach den allgemeinen Gesetzen verantwortlich.</p>
-    <p>Die Website enth&auml;lt m&ouml;glicherweise Links zu externen Websites Dritter, auf deren Inhalte ich keinen Einfluss habe. Zum Zeitpunkt der Verlinkung waren keine Rechtsverst&ouml;&szlig;e erkennbar. Bei Bekanntwerden von Rechtsverletzungen werden entsprechende Links umgehend entfernt.</p>
+    <h2 id="t-h5">Haftungsausschluss</h2>
+    <p id="t-liability-1">Die Inhalte dieser Website wurden mit gr&ouml;&szlig;ter Sorgfalt erstellt. F&uuml;r die Richtigkeit, Vollst&auml;ndigkeit und Aktualit&auml;t der Inhalte wird keine Gew&auml;hr &uuml;bernommen. Als Diensteanbieter bin ich gem&auml;&szlig; &sect;7 Abs. 1 TMG f&uuml;r eigene Inhalte nach den allgemeinen Gesetzen verantwortlich.</p>
+    <p id="t-liability-2">Die Website enth&auml;lt m&ouml;glicherweise Links zu externen Websites Dritter, auf deren Inhalte ich keinen Einfluss habe. Zum Zeitpunkt der Verlinkung waren keine Rechtsverst&ouml;&szlig;e erkennbar. Bei Bekanntwerden von Rechtsverletzungen werden entsprechende Links umgehend entfernt.</p>
   </section>
 
   <hr class="divider">
 
   <section>
-    <h2>Urheberrecht</h2>
-    <p>Die durch den Seitenbetreiber erstellten Inhalte und Werke auf dieser Website unterliegen dem deutschen Urheberrecht. Eine Vervielf&auml;ltigung, Bearbeitung, Verbreitung oder Verwertung au&szlig;erhalb der Grenzen des Urheberrechts bedarf der schriftlichen Zustimmung des jeweiligen Autors.</p>
+    <h2 id="t-h6">Urheberrecht</h2>
+    <p id="t-copyright">Die durch den Seitenbetreiber erstellten Inhalte und Werke auf dieser Website unterliegen dem deutschen Urheberrecht. Eine Vervielf&auml;ltigung, Bearbeitung, Verbreitung oder Verwertung au&szlig;erhalb der Grenzen des Urheberrechts bedarf der schriftlichen Zustimmung des jeweiligen Autors.</p>
   </section>
 
   <footer>
     <span>&copy; 2026 MSCon &middot; IT-Architektur &amp; Digitale Transformation</span>
-    <span><a href="impressum.html">Impressum</a> &nbsp;&middot;&nbsp; <a href="datenschutz.html">Datenschutz</a></span>
+    <span><a href="impressum.html">Impressum</a> &nbsp;&middot;&nbsp; <a href="datenschutz.html" id="t-ds-link">Datenschutz</a></span>
   </footer>
-
 </div>
+
+<script>
+var i18n = {
+  de: {
+    title: 'Impressum',
+    subtitle: 'Angaben gem\u00e4\u00df \u00a75 TMG',
+    h1: 'Diensteanbieter',
+    h2: 'Kontakt',
+    h3: 'Steuerliche Angaben',
+    'tax-label': 'Steuernummer',
+    h4: 'Verantwortlich f\u00fcr den Inhalt nach \u00a718 Abs.\u00a02 MStV',
+    h5: 'Haftungsausschluss',
+    'liability-1': 'Die Inhalte dieser Website wurden mit gr\u00f6\u00dfter Sorgfalt erstellt. F\u00fcr die Richtigkeit, Vollst\u00e4ndigkeit und Aktualit\u00e4t der Inhalte wird keine Gew\u00e4hr \u00fcbernommen. Als Diensteanbieter bin ich gem\u00e4\u00df \u00a77 Abs. 1 TMG f\u00fcr eigene Inhalte nach den allgemeinen Gesetzen verantwortlich.',
+    'liability-2': 'Die Website enth\u00e4lt m\u00f6glicherweise Links zu externen Websites Dritter, auf deren Inhalte ich keinen Einfluss habe. Zum Zeitpunkt der Verlinkung waren keine Rechtsverst\u00f6\u00dfe erkennbar. Bei Bekanntwerden von Rechtsverletzungen werden entsprechende Links umgehend entfernt.',
+    h6: 'Urheberrecht',
+    copyright: 'Die durch den Seitenbetreiber erstellten Inhalte und Werke auf dieser Website unterliegen dem deutschen Urheberrecht. Eine Vervielf\u00e4ltigung, Bearbeitung, Verbreitung oder Verwertung au\u00dferhalb der Grenzen des Urheberrechts bedarf der schriftlichen Zustimmung des jeweiligen Autors.',
+    'ds-link': 'Datenschutz'
+  },
+  en: {
+    title: 'Legal Notice',
+    subtitle: 'Information according to \u00a75 TMG (German Telemedia Act)',
+    h1: 'Service Provider',
+    h2: 'Contact',
+    h3: 'Tax Information',
+    'tax-label': 'Tax Number',
+    h4: 'Responsible for Content pursuant to \u00a718 Para.\u00a02 MStV',
+    h5: 'Disclaimer',
+    'liability-1': 'The contents of this website have been compiled with the utmost care. However, no guarantee is given for the accuracy, completeness or timeliness of the content. As a service provider, I am responsible for my own content on these pages in accordance with \u00a77 Para. 1 TMG.',
+    'liability-2': 'This website may contain links to external third-party websites over whose content I have no control. No legal violations were apparent at the time of linking. Upon notification of any such violations, the respective links will be removed immediately.',
+    h6: 'Copyright',
+    copyright: 'The content and works on this website are subject to German copyright law. Reproduction, editing, distribution or any form of exploitation outside the limits of copyright law requires the written consent of the respective author.',
+    'ds-link': 'Privacy Policy'
+  }
+};
+
+function setLang(lang) {
+  document.documentElement.lang = lang;
+  document.getElementById('btn-de').classList.toggle('active', lang === 'de');
+  document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+  var t = i18n[lang];
+  for (var k in t) {
+    var el = document.getElementById('t-' + k);
+    if (el) el.textContent = t[k];
+  }
+  try { localStorage.setItem('mscon-lang', lang); } catch(e){}
+}
+
+// Auto-detect: localStorage → navigator.language → 'de'
+(function(){
+  var stored;
+  try { stored = localStorage.getItem('mscon-lang') || localStorage.getItem('i18nextLng'); } catch(e){}
+  var nav = (navigator.language || '').slice(0,2).toLowerCase();
+  var lang = (stored === 'en' || stored === 'de') ? stored : (nav === 'en' ? 'en' : 'de');
+  document.getElementById('btn-de').classList.toggle('active', lang === 'de');
+  document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+  if (lang === 'en') setLang('en');
+})();
+</script>
 </body>
 </html>

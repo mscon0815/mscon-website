@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Datenschutzerkl&auml;rung &ndash; MSCon</title>
+<title>Datenschutz – MSCon</title>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,200;1,9..144,300&family=DM+Sans:wght@200;300;400;500&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
@@ -12,48 +12,52 @@ html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'D
 h1,h2{font-family:'Fraunces',Georgia,serif;font-weight:300;}
 a{color:var(--gold);text-decoration:none;}
 a:hover{text-decoration:underline;}
-
 .page{max-width:740px;margin:0 auto;padding:48px 24px 80px;}
-
 .back{display:inline-flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dim2);margin-bottom:48px;transition:color .2s;}
 .back:hover{color:var(--gold);text-decoration:none;}
-
 h1{font-size:clamp(1.8rem,4vw,2.8rem);margin-bottom:8px;}
 .subtitle{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:var(--dim2);margin-bottom:48px;}
-
 .divider{border:none;border-top:1px solid var(--border);margin:36px 0;}
-
-h2{font-size:1rem;font-family:'JetBrains Mono',monospace;font-weight:400;letter-spacing:.1em;text-transform:uppercase;color:var(--dim2);margin-bottom:12px;margin-top:4px;}
-
+h2{font-size:1rem;font-family:'JetBrains Mono',monospace;font-weight:400;letter-spacing:.1em;text-transform:uppercase;color:var(--dim2);margin-bottom:12px;}
 p{color:rgba(240,236,228,.75);margin-bottom:10px;}
 p:last-child{margin-bottom:0;}
 ul{color:rgba(240,236,228,.75);padding-left:20px;margin-bottom:10px;}
 ul li{margin-bottom:4px;}
-
 footer{margin-top:80px;padding-top:24px;border-top:1px solid var(--border);display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center;font-size:.78rem;color:var(--dim2);}
 footer a{color:var(--dim2);}
 footer a:hover{color:var(--gold);}
+#lang-toggle{position:fixed;top:1.6rem;right:2rem;display:flex;align-items:center;gap:.4rem;z-index:100;}
+#lang-toggle button{background:transparent;border:none;font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.12em;color:var(--dim2);cursor:pointer;padding:0;transition:color .2s;}
+#lang-toggle button.active{color:var(--gold);}
+#lang-toggle button:hover:not(.active){color:var(--text);}
+.lang-sep{font-size:.58rem;color:var(--dim2);}
 </style>
 </head>
 <body>
-<div class="page">
 
+<div id="lang-toggle">
+  <button id="btn-de" onclick="setLang('de')">DE</button>
+  <span class="lang-sep">/</span>
+  <button id="btn-en" onclick="setLang('en')">EN</button>
+</div>
+
+<div class="page">
   <a class="back" href="/">&#8592; mscon.one</a>
 
-  <h1>Datenschutzerkl&auml;rung</h1>
-  <p class="subtitle">Gem&auml;&szlig; DSGVO &middot; Stand: M&auml;rz 2026</p>
+  <h1 id="t-title">Datenschutzerkl&auml;rung</h1>
+  <p class="subtitle" id="t-subtitle">Gem&auml;&szlig; DSGVO &middot; Stand: M&auml;rz 2026</p>
 
   <section>
-    <h2>1. Verantwortlicher</h2>
+    <h2 id="t-h1">1. Verantwortlicher</h2>
     <p>Mark Schultes<br>Aachener Str. 19 b<br>52349 D&uuml;ren<br>E-Mail: <a href="mailto:schultes@mscon.one">schultes@mscon.one</a></p>
   </section>
 
   <hr class="divider">
 
   <section>
-    <h2>2. Ihre Rechte</h2>
-    <p>Sie haben gegen&uuml;ber dem Verantwortlichen folgende Rechte hinsichtlich der Sie betreffenden personenbezogenen Daten:</p>
-    <ul>
+    <h2 id="t-h2">2. Ihre Rechte</h2>
+    <p id="t-rights-intro">Sie haben gegen&uuml;ber dem Verantwortlichen folgende Rechte hinsichtlich der Sie betreffenden personenbezogenen Daten:</p>
+    <ul id="t-rights-list">
       <li>Recht auf Auskunft (Art. 15 DSGVO)</li>
       <li>Recht auf Berichtigung (Art. 16 DSGVO)</li>
       <li>Recht auf L&ouml;schung (Art. 17 DSGVO)</li>
@@ -61,62 +65,155 @@ footer a:hover{color:var(--gold);}
       <li>Recht auf Daten&uuml;bertragbarkeit (Art. 20 DSGVO)</li>
       <li>Recht auf Widerspruch gegen die Verarbeitung (Art. 21 DSGVO)</li>
     </ul>
-    <p>Zur Aus&uuml;bung Ihrer Rechte wenden Sie sich bitte per E-Mail an <a href="mailto:schultes@mscon.one">schultes@mscon.one</a>.</p>
+    <p id="t-rights-contact">Zur Aus&uuml;bung Ihrer Rechte wenden Sie sich bitte per E-Mail an <a href="mailto:schultes@mscon.one">schultes@mscon.one</a>.</p>
   </section>
 
   <hr class="divider">
 
   <section>
-    <h2>3. Kontaktformular</h2>
-    <p>Wenn Sie das Kontaktformular auf dieser Website nutzen, werden folgende Daten erhoben und verarbeitet:</p>
-    <ul>
+    <h2 id="t-h3">3. Kontaktformular</h2>
+    <p id="t-form-intro">Wenn Sie das Kontaktformular auf dieser Website nutzen, werden folgende Daten erhoben und verarbeitet:</p>
+    <ul id="t-form-list">
       <li>Vor- und Nachname</li>
       <li>E-Mail-Adresse</li>
       <li>Gew&uuml;nschte Beratungsthemen</li>
       <li>Nachrichtentext</li>
       <li>Sprache der Anfrage</li>
     </ul>
-    <p><strong>Zweck:</strong> Bearbeitung Ihrer Kontaktanfrage und Anbahnung eines Beratungsverh&auml;ltnisses.</p>
-    <p><strong>Rechtsgrundlage:</strong> Art. 6 Abs. 1 lit. b DSGVO (vorvertragliche Ma&szlig;nahmen).</p>
-    <p><strong>Empf&auml;nger:</strong> Die Formulardaten werden &uuml;ber den Dienst Formspree (Formspree Inc., USA) weitergeleitet und per E-Mail zugestellt. Formspree ist gem&auml;&szlig; EU-Standardvertragsklauseln zertifiziert. Nach vollst&auml;ndiger Bearbeitung Ihrer Anfrage werden die Daten gel&ouml;scht.</p>
+    <p><strong id="t-purpose-label">Zweck:</strong> <span id="t-purpose">Bearbeitung Ihrer Kontaktanfrage und Anbahnung eines Beratungsverh&auml;ltnisses.</span></p>
+    <p><strong id="t-legal-label">Rechtsgrundlage:</strong> <span id="t-legal">Art. 6 Abs. 1 lit. b DSGVO (vorvertragliche Ma&szlig;nahmen).</span></p>
+    <p><strong id="t-recipient-label">Empf&auml;nger:</strong> <span id="t-recipient">Die Formulardaten werden &uuml;ber den Dienst Formspree (Formspree Inc., USA) weitergeleitet und per E-Mail zugestellt. Formspree ist gem&auml;&szlig; EU-Standardvertragsklauseln zertifiziert. Nach vollst&auml;ndiger Bearbeitung Ihrer Anfrage werden die Daten gel&ouml;scht.</span></p>
   </section>
 
   <hr class="divider">
 
   <section>
-    <h2>4. Hosting &ndash; Cloudflare Pages</h2>
-    <p>Diese Website wird auf Cloudflare Pages gehostet (Cloudflare, Inc., 101 Townsend St, San Francisco, CA 94107, USA). Beim Aufruf der Website werden automatisch Verbindungsdaten in Server-Logs gespeichert, darunter IP-Adresse, Browser-Typ, Betriebssystem, Referrer-URL, Datum und Uhrzeit des Zugriffs.</p>
-    <p><strong>Rechtsgrundlage:</strong> Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse am sicheren Betrieb der Website). Cloudflare Inc. ist unter dem EU-US Data Privacy Framework zertifiziert.</p>
+    <h2 id="t-h4">4. Hosting &ndash; Cloudflare Pages</h2>
+    <p id="t-hosting">Diese Website wird auf Cloudflare Pages gehostet (Cloudflare, Inc., 101 Townsend St, San Francisco, CA 94107, USA). Beim Aufruf der Website werden automatisch Verbindungsdaten in Server-Logs gespeichert, darunter IP-Adresse, Browser-Typ, Betriebssystem, Referrer-URL, Datum und Uhrzeit des Zugriffs. <strong id="t-hosting-legal-label">Rechtsgrundlage:</strong> <span id="t-hosting-legal">Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse am sicheren Betrieb der Website). Cloudflare Inc. ist unter dem EU-US Data Privacy Framework zertifiziert.</span></p>
   </section>
 
   <hr class="divider">
 
   <section>
-    <h2>5. Webanalyse &ndash; Cloudflare Web Analytics</h2>
-    <p>Diese Website verwendet Cloudflare Web Analytics. Dabei handelt es sich um ein datenschutzfreundliches Analysetool, das <strong>keine Cookies setzt</strong>, kein Browser-Fingerprinting durchf&uuml;hrt und keine personenbezogenen Daten speichert. Es werden ausschlie&szlig;lich aggregierte, nicht personenbezogene Seitenaufrufstatistiken erfasst.</p>
-    <p><strong>Rechtsgrundlage:</strong> Art. 6 Abs. 1 lit. f DSGVO. Eine Einwilligung ist aufgrund der Anonymit&auml;t der Daten nicht erforderlich.</p>
+    <h2 id="t-h5">5. Webanalyse &ndash; Cloudflare Web Analytics</h2>
+    <p id="t-analytics">Diese Website verwendet Cloudflare Web Analytics. Dabei handelt es sich um ein datenschutzfreundliches Analysetool, das <strong id="t-no-cookies">keine Cookies setzt</strong>, kein Browser-Fingerprinting durchf&uuml;hrt und keine personenbezogenen Daten speichert. Es werden ausschlie&szlig;lich aggregierte, nicht personenbezogene Seitenaufrufstatistiken erfasst. <strong id="t-analytics-legal-label">Rechtsgrundlage:</strong> <span id="t-analytics-legal">Art. 6 Abs. 1 lit. f DSGVO. Eine Einwilligung ist aufgrund der Anonymit&auml;t der Daten nicht erforderlich.</span></p>
   </section>
 
   <hr class="divider">
 
   <section>
-    <h2>6. Keine weiteren Tracking-Tools</h2>
-    <p>Es werden keine weiteren Analyse-, Tracking- oder Werbedienste eingesetzt. Insbesondere kein Google Analytics, keine Social-Media-Pixel und keine Retargeting-Technologien.</p>
+    <h2 id="t-h6">6. <span id="t-no-tracking-head">Keine weiteren Tracking-Tools</span></h2>
+    <p id="t-no-tracking">Es werden keine weiteren Analyse-, Tracking- oder Werbedienste eingesetzt. Insbesondere kein Google Analytics, keine Social-Media-Pixel und keine Retargeting-Technologien.</p>
   </section>
 
   <hr class="divider">
 
   <section>
-    <h2>7. Beschwerderecht</h2>
-    <p>Sie haben das Recht, sich bei einer Datenschutz-Aufsichtsbeh&ouml;rde &uuml;ber die Verarbeitung Ihrer personenbezogenen Daten zu beschweren. Die zust&auml;ndige Aufsichtsbeh&ouml;rde f&uuml;r Nordrhein-Westfalen ist:</p>
+    <h2 id="t-h7">7. Beschwerderecht</h2>
+    <p id="t-complaint">Sie haben das Recht, sich bei einer Datenschutz-Aufsichtsbeh&ouml;rde &uuml;ber die Verarbeitung Ihrer personenbezogenen Daten zu beschweren. Die zust&auml;ndige Aufsichtsbeh&ouml;rde f&uuml;r Nordrhein-Westfalen ist:</p>
     <p>Landesbeauftragte f&uuml;r Datenschutz und Informationsfreiheit NRW<br>Kavalleriestr. 2&ndash;4, 40213 D&uuml;sseldorf<br><a href="https://www.ldi.nrw.de" target="_blank" rel="noopener">www.ldi.nrw.de</a></p>
   </section>
 
   <footer>
     <span>&copy; 2026 MSCon &middot; IT-Architektur &amp; Digitale Transformation</span>
-    <span><a href="impressum.html">Impressum</a> &nbsp;&middot;&nbsp; <a href="datenschutz.html">Datenschutz</a></span>
+    <span><a href="impressum.html" id="t-imp-link">Impressum</a> &nbsp;&middot;&nbsp; <a href="datenschutz.html">Datenschutz</a></span>
   </footer>
-
 </div>
+
+<script>
+var i18n = {
+  de: {
+    title: 'Datenschutzerkl\u00e4rung',
+    subtitle: 'Gem\u00e4\u00df DSGVO \u00b7 Stand: M\u00e4rz 2026',
+    h1: '1. Verantwortlicher',
+    h2: '2. Ihre Rechte',
+    'rights-intro': 'Sie haben gegen\u00fcber dem Verantwortlichen folgende Rechte hinsichtlich der Sie betreffenden personenbezogenen Daten:',
+    'rights-list': '<li>Recht auf Auskunft (Art. 15 DSGVO)</li><li>Recht auf Berichtigung (Art. 16 DSGVO)</li><li>Recht auf L\u00f6schung (Art. 17 DSGVO)</li><li>Recht auf Einschr\u00e4nkung der Verarbeitung (Art. 18 DSGVO)</li><li>Recht auf Daten\u00fcbertragbarkeit (Art. 20 DSGVO)</li><li>Recht auf Widerspruch gegen die Verarbeitung (Art. 21 DSGVO)</li>',
+    'rights-contact': 'Zur Aus\u00fcbung Ihrer Rechte wenden Sie sich bitte per E-Mail an <a href="mailto:schultes@mscon.one">schultes@mscon.one</a>.',
+    h3: '3. Kontaktformular',
+    'form-intro': 'Wenn Sie das Kontaktformular auf dieser Website nutzen, werden folgende Daten erhoben und verarbeitet:',
+    'form-list': '<li>Vor- und Nachname</li><li>E-Mail-Adresse</li><li>Gew\u00fcnschte Beratungsthemen</li><li>Nachrichtentext</li><li>Sprache der Anfrage</li>',
+    'purpose-label': 'Zweck:',
+    purpose: 'Bearbeitung Ihrer Kontaktanfrage und Anbahnung eines Beratungsverh\u00e4ltnisses.',
+    'legal-label': 'Rechtsgrundlage:',
+    legal: 'Art. 6 Abs. 1 lit. b DSGVO (vorvertragliche Ma\u00dfnahmen).',
+    'recipient-label': 'Empf\u00e4nger:',
+    recipient: 'Die Formulardaten werden \u00fcber den Dienst Formspree (Formspree Inc., USA) weitergeleitet und per E-Mail zugestellt. Formspree ist gem\u00e4\u00df EU-Standardvertragsklauseln zertifiziert. Nach vollst\u00e4ndiger Bearbeitung Ihrer Anfrage werden die Daten gel\u00f6scht.',
+    h4: '4. Hosting \u2013 Cloudflare Pages',
+    hosting: 'Diese Website wird auf Cloudflare Pages gehostet (Cloudflare, Inc., 101 Townsend St, San Francisco, CA 94107, USA). Beim Aufruf der Website werden automatisch Verbindungsdaten in Server-Logs gespeichert, darunter IP-Adresse, Browser-Typ, Betriebssystem, Referrer-URL, Datum und Uhrzeit des Zugriffs. ',
+    'hosting-legal-label': 'Rechtsgrundlage:',
+    'hosting-legal': 'Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse am sicheren Betrieb der Website). Cloudflare Inc. ist unter dem EU-US Data Privacy Framework zertifiziert.',
+    h5: '5. Webanalyse \u2013 Cloudflare Web Analytics',
+    analytics: 'Diese Website verwendet Cloudflare Web Analytics. Dabei handelt es sich um ein datenschutzfreundliches Analysetool, das ',
+    'no-cookies': 'keine Cookies setzt',
+    'analytics-legal-label': 'Rechtsgrundlage:',
+    'analytics-legal': 'Art. 6 Abs. 1 lit. f DSGVO. Eine Einwilligung ist aufgrund der Anonymit\u00e4t der Daten nicht erforderlich.',
+    'no-tracking-head': 'Keine weiteren Tracking-Tools',
+    h6: '6. ',
+    'no-tracking': 'Es werden keine weiteren Analyse-, Tracking- oder Werbedienste eingesetzt. Insbesondere kein Google Analytics, keine Social-Media-Pixel und keine Retargeting-Technologien.',
+    h7: '7. Beschwerderecht',
+    complaint: 'Sie haben das Recht, sich bei einer Datenschutz-Aufsichtsbeh\u00f6rde \u00fcber die Verarbeitung Ihrer personenbezogenen Daten zu beschweren. Die zust\u00e4ndige Aufsichtsbeh\u00f6rde f\u00fcr Nordrhein-Westfalen ist:',
+    'imp-link': 'Impressum'
+  },
+  en: {
+    title: 'Privacy Policy',
+    subtitle: 'Pursuant to GDPR \u00b7 As of March 2026',
+    h1: '1. Data Controller',
+    h2: '2. Your Rights',
+    'rights-intro': 'You have the following rights regarding your personal data processed by the controller:',
+    'rights-list': '<li>Right of access (Art. 15 GDPR)</li><li>Right to rectification (Art. 16 GDPR)</li><li>Right to erasure (Art. 17 GDPR)</li><li>Right to restriction of processing (Art. 18 GDPR)</li><li>Right to data portability (Art. 20 GDPR)</li><li>Right to object to processing (Art. 21 GDPR)</li>',
+    'rights-contact': 'To exercise your rights, please contact us by email at <a href="mailto:schultes@mscon.one">schultes@mscon.one</a>.',
+    h3: '3. Contact Form',
+    'form-intro': 'When you use the contact form on this website, the following data is collected and processed:',
+    'form-list': '<li>First and last name</li><li>Email address</li><li>Requested consulting topics</li><li>Message text</li><li>Language of the inquiry</li>',
+    'purpose-label': 'Purpose:',
+    purpose: 'Processing your enquiry and initiating a consulting relationship.',
+    'legal-label': 'Legal basis:',
+    legal: 'Art. 6 Para. 1 lit. b GDPR (pre-contractual measures).',
+    'recipient-label': 'Recipient:',
+    recipient: 'Form data is forwarded via Formspree (Formspree Inc., USA) and delivered by email. Formspree is certified under EU Standard Contractual Clauses. Data is deleted once your enquiry has been fully processed.',
+    h4: '4. Hosting \u2013 Cloudflare Pages',
+    hosting: 'This website is hosted on Cloudflare Pages (Cloudflare, Inc., 101 Townsend St, San Francisco, CA 94107, USA). When you access the website, connection data is automatically stored in server logs, including IP address, browser type, operating system, referrer URL, date and time of access. ',
+    'hosting-legal-label': 'Legal basis:',
+    'hosting-legal': 'Art. 6 Para. 1 lit. f GDPR (legitimate interest in the secure operation of the website). Cloudflare Inc. is certified under the EU-US Data Privacy Framework.',
+    h5: '5. Web Analytics \u2013 Cloudflare Web Analytics',
+    analytics: 'This website uses Cloudflare Web Analytics, a privacy-friendly analytics tool that ',
+    'no-cookies': 'sets no cookies',
+    'analytics-legal-label': 'Legal basis:',
+    'analytics-legal': 'Art. 6 Para. 1 lit. f GDPR. No consent is required due to the anonymity of the data.',
+    'no-tracking-head': 'No Further Tracking Tools',
+    h6: '6. ',
+    'no-tracking': 'No further analytics, tracking or advertising services are used \u2014 in particular no Google Analytics, no social media pixels and no retargeting technologies.',
+    h7: '7. Right to Lodge a Complaint',
+    complaint: 'You have the right to lodge a complaint with a data protection supervisory authority regarding the processing of your personal data. The competent authority for North Rhine-Westphalia is:',
+    'imp-link': 'Legal Notice'
+  }
+};
+
+function setLang(lang) {
+  document.documentElement.lang = lang;
+  document.getElementById('btn-de').classList.toggle('active', lang === 'de');
+  document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+  var t = i18n[lang];
+  for (var k in t) {
+    var el = document.getElementById('t-' + k);
+    if (!el) continue;
+    if (el.tagName === 'UL') { el.innerHTML = t[k]; }
+    else if (k === 'rights-contact' || k === 'hosting' || k === 'analytics') { el.innerHTML = t[k]; }
+    else { el.textContent = t[k]; }
+  }
+  try { localStorage.setItem('mscon-lang', lang); } catch(e){}
+}
+
+(function(){
+  var stored;
+  try { stored = localStorage.getItem('mscon-lang') || localStorage.getItem('i18nextLng'); } catch(e){}
+  var nav = (navigator.language || '').slice(0,2).toLowerCase();
+  var lang = (stored === 'en' || stored === 'de') ? stored : (nav === 'en' ? 'en' : 'de');
+  document.getElementById('btn-de').classList.toggle('active', lang === 'de');
+  document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+  if (lang === 'en') setLang('en');
+})();
+</script>
 </body>
 </html>

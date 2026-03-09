@@ -953,6 +953,7 @@ function setLang(lang) {
   // Submit button — only update if not mid-send
   var sbtn = document.getElementById('sbtn');
   if (sbtn && !sbtn.disabled) sbtn.innerHTML = t.submit;
+  try { localStorage.setItem('mscon-lang', lang); } catch(e) {}
 }
 
 // -- CARDS --
@@ -1004,6 +1005,16 @@ function syncContact() {
   card.addEventListener('mouseleave', function(){ if (!obj.on){ card.classList.remove('on'); scrambleBlank(bd,obj.plain,400); } });
   cards.push(obj);
 });
+
+// Auto-detect language after cards are ready
+(function(){
+  var s; try { s = localStorage.getItem('mscon-lang'); } catch(e){}
+  var nav = (navigator.language||'').slice(0,2).toLowerCase();
+  var lang = (s==='en'||s==='de') ? s : (nav==='en' ? 'en' : 'de');
+  document.getElementById('btn-de').classList.toggle('active', lang==='de');
+  document.getElementById('btn-en').classList.toggle('active', lang==='en');
+  if (lang === 'en') setLang('en');
+})();
 
 function tog(idx) {
   var c = cards[idx]; if (!c) return;

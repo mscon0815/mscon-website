@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- CRM endpoint: swap to https://crm.mscon.one/api/v1/leads when CRM is deployed -->
+<meta name="crm-api-url" content="https://formspree.io/f/xvzwgbzg">
 <title>MSCon &ndash; Unlock Your Potential</title>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,200;1,9..144,300&family=DM+Sans:wght@200;300;400;500&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -1005,7 +1007,7 @@ function tog(idx) {
 }
 
 // -- FORM --
-var CRM_API_URL = 'https://crm.mscon.one/api/leads';
+var CRM_API_URL = document.querySelector('meta[name="crm-api-url"]').getAttribute('content');
 var TOPIC_MAP = {'IT-Architektur & Design':'it_architecture_design','Digitale Transformation':'digital_transformation','Cloud & Infrastruktur':'cloud_infrastructure','Requirements Engineering':'requirements_engineering','Integration & Automatisierung':'integration_automation','Architektur-Review':'architecture_review'};
 function setErr(id, msg) {
   var wrap = document.getElementById(id);

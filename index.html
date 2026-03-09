@@ -11,7 +11,8 @@
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 :root{--bg:#070707;--red:#9B2335;--gold:#E8A030;--olive:#7A8C3A;--text:#f0ece4;--dim:#3a3530;--dim2:#5a5248;--border:rgba(255,255,255,.06);}
-html{scroll-behavior:smooth;overflow-y:scroll;}
+html{scroll-behavior:smooth;overflow:hidden;}
+html.open{overflow-y:scroll;}
 body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-weight:300;overflow:hidden;cursor:none;}
 body.open{overflow-x:hidden;overflow-y:auto;}
 
@@ -695,24 +696,22 @@ var GLITCH_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz01234567
 function rGC() { return GLITCH_CHARS[Math.floor(Math.random()*GLITCH_CHARS.length)]; }
 
 function statusToButton() {
-  var statusLine = document.getElementById('status-line');
-  var txtEl      = document.getElementById('status-txt');
-  var ubtn       = document.getElementById('ubtn');
-  var cl1El      = document.getElementById('cl1');
-  var cl2El      = document.getElementById('cl2');
-  var t          = i18n[currentLang];
+  var txtEl = document.getElementById('status-txt');
+  var ubtn  = document.getElementById('ubtn');
+  var cl1El = document.getElementById('cl1');
+  var cl2El = document.getElementById('cl2');
 
   clearInterval(spinTimer);
   spinEl.textContent = '';
 
   // Step 1: scramble status text to "System geladen." (700ms) — stays visible
-  scrambleTo(txtEl, t.status_loaded, 700);
+  scrambleTo(txtEl, i18n[currentLang].status_loaded, 700);
 
   // Step 2: after scramble + hold, scramble-in claim lines below
   setTimeout(function() {
-    scrambleTo(cl1El, t.cl1, 650);
+    scrambleTo(cl1El, i18n[currentLang].cl1, 650);
     setTimeout(function() {
-      scrambleTo(cl2El, t.cl2, 580);
+      scrambleTo(cl2El, i18n[currentLang].cl2, 580);
       // Step 3: glitch-in button after cl2 finishes
       setTimeout(function() {
         ubtn.classList.add('glitch-in');
@@ -792,6 +791,7 @@ document.getElementById('ubtn').addEventListener('click', function() {
 
   // Open site
   setTimeout(function() {
+    document.documentElement.classList.add('open');
     document.body.classList.add('open');
     document.getElementById('sh').classList.add('on');
   }, 700);
@@ -817,7 +817,9 @@ function rB() { return BL[Math.floor(Math.random()*BL.length)]; }
 function scrambleTo(el, target, dur) {
   dur = dur||750;
   var frames = Math.round(dur/16), len = target.length, f = 0;
+  var id = el._scrId = (el._scrId||0) + 1;
   (function step() {
+    if (el._scrId !== id) return;
     f++; var rev = Math.floor(f/frames*len), out = '';
     for (var i = 0; i < len; i++) {
       if (i < rev) out += target[i];
@@ -908,11 +910,13 @@ function setLang(lang) {
     var key = el.getAttribute('data-i18n');
     if (t[key] !== undefined) el.innerHTML = t[key];
   });
-  // Update claim lines if already revealed
-  var cl1El = document.getElementById('cl1');
-  var cl2El = document.getElementById('cl2');
-  if (cl1El && cl1El.textContent) cl1El.textContent = t.cl1;
-  if (cl2El && cl2El.textContent) cl2El.textContent = t.cl2;
+  // Cancel any in-progress scrambles on intro elements and update their text
+  var cl1El   = document.getElementById('cl1');
+  var cl2El   = document.getElementById('cl2');
+  var statEl  = document.getElementById('status-txt');
+  if (cl1El)  { cl1El._scrId  = (cl1El._scrId||0)  + 1; if (cl1El.textContent)  cl1El.textContent  = t.cl1; }
+  if (cl2El)  { cl2El._scrId  = (cl2El._scrId||0)  + 1; if (cl2El.textContent)  cl2El.textContent  = t.cl2; }
+  if (statEl) { statEl._scrId = (statEl._scrId||0) + 1; if (statEl.textContent) statEl.textContent = t.status_loaded; }
   // Update form placeholders
   document.getElementById('fn').placeholder = t.fn_ph;
   document.getElementById('ln').placeholder = t.ln_ph;

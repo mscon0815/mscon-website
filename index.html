@@ -100,8 +100,8 @@ canvas{position:fixed;inset:0;z-index:0;}
 <div id="contact">
   <a href="mailto:schultes@mscon.one">schultes@mscon.one</a>
   &nbsp;&middot;&nbsp; <span id="contact-remote"></span>
-  &nbsp;&middot;&nbsp; <a href="impressum.html">Impressum</a>
-  &nbsp;&middot;&nbsp; <a href="datenschutz.html">Datenschutz</a>
+  &nbsp;&middot;&nbsp; <a href="impressum.html" id="link-impressum">Impressum</a>
+  &nbsp;&middot;&nbsp; <a href="datenschutz.html" id="link-datenschutz">Datenschutz</a>
 </div>
 
 <div id="lang-toggle">
@@ -115,12 +115,14 @@ var i18n = {
   de: {
     tagline: 'IT-Architektur &middot; Digitale Transformation',
     status:  'System wird vorbereitet',
-    remote:  'Remote &amp; vor Ort'
+    remote:  'Remote &amp; vor Ort',
+    impressum: 'Impressum', datenschutz: 'Datenschutz'
   },
   en: {
     tagline: 'IT Architecture &middot; Digital Transformation',
     status:  'System is being prepared',
-    remote:  'Remote &amp; on-site'
+    remote:  'Remote &amp; on-site',
+    impressum: 'Imprint', datenschutz: 'Privacy Policy'
   }
 };
 
@@ -132,14 +134,27 @@ function setLang(lang) {
   document.getElementById('tagline').innerHTML         = i18n[lang].tagline;
   document.getElementById('status-text').textContent   = i18n[lang].status;
   document.getElementById('contact-remote').innerHTML  = i18n[lang].remote;
+  document.getElementById('link-impressum').textContent  = i18n[lang].impressum;
+  document.getElementById('link-datenschutz').textContent = i18n[lang].datenschutz;
   document.getElementById('btn-de').classList.toggle('active', lang === 'de');
   document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+  try { localStorage.setItem('mscon-lang', lang); } catch(e) {}
 }
 
-// init
-document.getElementById('tagline').innerHTML         = i18n.de.tagline;
-document.getElementById('status-text').textContent   = i18n.de.status;
-document.getElementById('contact-remote').innerHTML  = i18n.de.remote;
+// init — auto-detect from localStorage / browser language
+(function() {
+  var s; try { s = localStorage.getItem('mscon-lang'); } catch(e) {}
+  var nav = (navigator.language || '').slice(0, 2).toLowerCase();
+  var lang = (s === 'en' || s === 'de') ? s : (nav === 'en' ? 'en' : 'de');
+  document.getElementById('tagline').innerHTML         = i18n[lang].tagline;
+  document.getElementById('status-text').textContent   = i18n[lang].status;
+  document.getElementById('contact-remote').innerHTML  = i18n[lang].remote;
+  document.getElementById('link-impressum').textContent  = i18n[lang].impressum;
+  document.getElementById('link-datenschutz').textContent = i18n[lang].datenschutz;
+  document.getElementById('btn-de').classList.toggle('active', lang === 'de');
+  document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+  currentLang = lang;
+})();
 
 // -- THREE.JS GALAXY --
 (function() {

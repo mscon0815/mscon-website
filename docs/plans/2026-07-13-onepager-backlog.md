@@ -1,7 +1,7 @@
 # One-Pager-Backlog: SEO, A11y, DSGVO-Restpunkte
 
-Status: in Arbeit
-Branch/Commits: — (übernommen aus alter CLAUDE.md-TODO-Liste)
+Status: in Arbeit (A ✅ erledigt, B–I offen)
+Branch/Commits: main `1b0b06d` + `63dbae6` · staging `b514c34` + `81a18f2`
 
 ## Kontext
 
@@ -16,12 +16,13 @@ vermerkt — den One-Pager auf staging.
 
 ## Plan (offene Punkte)
 
-### A — WIP auf main abschließen (SEO-Head Construction-Page)
+### A — WIP auf main abschließen (SEO-Head Construction-Page) ✅ ERLEDIGT
 Lokal uncommitted: SEO-Meta, OG/Twitter-Tags, JSON-LD, Self-hosted Fonts
 (`assets/fonts/` liegt bereit, Fonts v17/v38). Testen (Prinzip 3), dann
 committen. **Blocker:** `assets/og-image.jpg` (1200×630, dunkler Hintergrund,
 Logo + Tagline) existiert nicht — OG-Tags referenzieren es bereits.
 JSON-LD-Platzhalter `DEIN-LINKEDIN-HANDLE` füllen.
+→ Umgesetzt am 2026-07-13, siehe „Umsetzung" unten.
 
 ### B — SEO-Head auch in den One-Pager (staging)
 Derselbe Head-Block (Meta/OG/JSON-LD/@font-face) muss in den One-Pager,
@@ -70,18 +71,65 @@ Danach Design-System-Block in CLAUDE.md aktualisieren.
 
 ## Umsetzung
 
-— (noch nicht begonnen; Stand siehe Plan)
+**Punkt A (2026-07-13):**
+- JSON-LD bereinigt: `sameAs`-Platzhalter entfernt (LinkedIn-Handle offen,
+  → Punkt D), E-Mail auf `schultes@mscon.one` korrigiert (User-Entscheidung).
+- `assets/og-image.jpg` generiert: HTML-Template im Design-System
+  (Logo invertiert, Fraunces 900, Akzent-Dots gold/rot/olive, Tagline,
+  Claim, Domain) → Playwright-Screenshot 2×-DSF → sips-Downscale auf
+  exakt 1200×630 JPEG (64 KB).
+- Commit `1b0b06d` (main): SEO-Head, Self-hosted Fonts (nur .woff2),
+  og-image, Mobile-Partikelreduktion, Logo-img-Attribute, --dim2-Tweak.
+
+**Zusatzbefund + Fix (2026-07-13):** Die Legal-/404-Seiten luden weiterhin
+Google Fonts (googleapis-Link) — dieselbe DSGVO-Lücke, die auf index.html
+geschlossen wurde. Behoben in `63dbae6` (main): Link durch @font-face-Block
+ersetzt (Fraunces 300+700, DM Sans, JB Mono; absolute Pfade wegen
+/impressum-Redirect ohne .html). Auf staging via `b514c34`
+(Font-Assets) + cherry-pick `81a18f2`.
+
+Anmerkung: Fraunces wird auf der Construction-Page nicht genutzt —
+die @font-face-Deklarationen bleiben (kein Netzwerk-Kosten, Parität für
+One-Pager). Die nicht referenzierten Font-Formate (eot/svg/ttf/woff)
+liegen untracked auf Platte, nur .woff2 ist committed.
 
 ## Tests
 
 Je Punkt gemäß CLAUDE.md-Prinzip 3 (Selbst-Test vor Push); für One-Pager
 zusätzlich Cursor + Unlock-Button manuell prüfen (kritische Funktionen).
 
+**Punkt A + Zusatzfix (alle PASS):**
+- greps: 0× googleapis in *.html, 0× Platzhalter `DEIN-`, 0× kontakt@
+- Playwright (System-Chrome, lokaler Server), Construction-Page 13 Checks:
+  keine Google-Requests, genutzte Fonts 200, alle @font-face-URLs auflösbar
+  (fonts.load), JSON-LD parsebar + korrekte Felder, Meta/OG-Tags, og-image
+  200, Canvas + Logo gerendert, keine fehlgeschlagenen Requests außer
+  favicon (Punkt I)
+- Playwright Legal-/404-Seiten, 12 Checks: 0 Google-Requests, je 3 Fonts
+  mit 200, fonts.check für DM Sans/JB Mono/Fraunces true, keine JS-Fehler
+- Sichtprüfung Screenshots: og-image.jpg + Construction-Page nach
+  Intro-Animation (4,5 s) — Rendering korrekt
+
+**Live-Verifikation (curl):**
+| Check | mscon.one | staging.mscon.one |
+|---|---|---|
+| og-image.jpg 200 | ✅ (63695 B, image/jpeg) | — (kein SEO-Head, Punkt B) |
+| index: googleapis = 0, JSON-LD = 1, DEIN- = 0 | ✅ | — (Punkt B) |
+| impressum/datenschutz googleapis = 0 | ✅ | ✅ |
+| fraunces-300.woff2 200 | ✅ | ✅ |
+
 ## Ergebnisse
 
-— (offen)
+- Punkt A erledigt: Construction-Page auf main hat vollständigen SEO-Head
+  (Meta, OG/Twitter mit funktionierendem og-image, JSON-LD ohne Platzhalter),
+  Self-hosted Fonts, Mobile-Performance-Tuning.
+- Zusatz: Sämtliche Seiten auf **beiden** Branches sind frei von
+  Google-Fonts-Requests (DSGVO).
+- Commits: main `1b0b06d`, `63dbae6` · staging `b514c34`, `81a18f2`
 
 ## Offene Punkte
 
+- B–I aus dem Plan (One-Pager: SEO-Head, DSGVO-Checkbox, LinkedIn/Cal,
+  Nav-E-Mail, A11y, Kontrast, Favicon)
 - Platzhalter beim User einholen: LinkedIn-Handle, cal.com-Link
-- og-image.jpg erstellen (Tool-Wahl offen: Figma/Canva/Script)
+- Untracked Font-Formate (eot/svg/ttf/woff) ggf. löschen oder .gitignore

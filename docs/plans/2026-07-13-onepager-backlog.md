@@ -1,7 +1,7 @@
 # One-Pager-Backlog: SEO, A11y, DSGVO-Restpunkte
 
-Status: in Arbeit (A ✅ erledigt, B–I offen)
-Branch/Commits: main `1b0b06d` + `63dbae6` · staging `b514c34` + `81a18f2`
+Status: in Arbeit (A–C, E, F, H, I ✅ · G offen · D zurückgestellt)
+Branch/Commits: main `1b0b06d`, `63dbae6`, `24de908` · staging `b514c34`, `81a18f2`, `e36a635`, `6dfb2e1`
 
 ## Kontext
 
@@ -93,6 +93,29 @@ die @font-face-Deklarationen bleiben (kein Netzwerk-Kosten, Parität für
 One-Pager). Die nicht referenzierten Font-Formate (eot/svg/ttf/woff)
 liegen untracked auf Platte, nur .woff2 ist committed.
 
+**Punkte B, C, E, F, H, I (2026-07-13, zweiter Durchlauf):**
+- **I Favicon:** `favicon.ico` (32×32 PNG-in-ICO, dunkles Tile mit Logo,
+  Playwright-generiert + Node-ICO-Wrapper) im Root, `<link rel="icon">`
+  auf allen Seiten beider Branches. Favicon-404 behoben. (main `24de908`,
+  staging cherry-pick `e36a635` — Konflikt in index.html erwartungsgemäß,
+  per `--ours` gelöst, One-Pager-Link im Folgecommit)
+- **H Kontrast:** `--dim2` → `#6b6058` auf Legal-/404-Seiten (beide
+  Branches) und im One-Pager.
+- **B SEO-Head One-Pager:** Title (SEO-Variante), Description, robots,
+  canonical → mscon.one (verhindert Duplicate-Content der Staging-Domain),
+  OG/Twitter, JSON-LD, favicon; googleapis-Link durch @font-face ersetzt
+  (Fraunces 300/700/900 + italic 200–300 via 200italic-File, DM Sans,
+  JB Mono; absolute Pfade). (staging `6dfb2e1`)
+- **C DSGVO-Checkbox:** `#ff-ds` vor dem Submit-Button, eigene CSS-Regeln,
+  i18n-Keys `dsgvo_label`/`err_ds` (de+en, Label mit Link via innerHTML),
+  Validierung im Submit-Handler (`setErr('ff-ds', …)`), Fehler-Reset bei
+  `change`.
+- **E E-Mail vor Unlock:** `mailto:schultes@mscon.one` als erster Link in
+  der fixen `#legal-bar` (das frühere Nav existiert nicht mehr — Intent
+  von Alt-TODO #9 damit erfüllt).
+- **F Partikelreduktion:** `isMobile`-Abfrage im One-Pager, Sterne
+  700/2200, Mesh 60/180.
+
 ## Tests
 
 Je Punkt gemäß CLAUDE.md-Prinzip 3 (Selbst-Test vor Push); für One-Pager
@@ -113,25 +136,46 @@ zusätzlich Cursor + Unlock-Button manuell prüfen (kritische Funktionen).
 **Live-Verifikation (curl):**
 | Check | mscon.one | staging.mscon.one |
 |---|---|---|
-| og-image.jpg 200 | ✅ (63695 B, image/jpeg) | — (kein SEO-Head, Punkt B) |
-| index: googleapis = 0, JSON-LD = 1, DEIN- = 0 | ✅ | — (Punkt B) |
+| og-image.jpg 200 | ✅ (63695 B, image/jpeg) | — (Asset auf main) |
+| index: googleapis = 0, JSON-LD = 1, DEIN- = 0 | ✅ | ✅ |
 | impressum/datenschutz googleapis = 0 | ✅ | ✅ |
 | fraunces-300.woff2 200 | ✅ | ✅ |
+| favicon.ico 200 | ✅ | ✅ |
+| dsgvo-checkbox + isMobile im HTML | — (Construction) | ✅ |
+| dim2 = #6b6058 | ✅ | ✅ |
+
+Hinweis: `mailto:`-Link live nicht als Klartext grepbar — Cloudflare
+Email Protection (bewusst aktiv, gestrichenes TODO #4) schreibt ihn zu
+`/cdn-cgi/l/email-protection` um; im Browser funktional.
+
+**Zweiter Durchlauf — Favicon/dim2 (main, 4 Seiten):** icon-Tag + ico=200,
+dim2 korrekt, **0 Konsolenfehler** (Favicon-404 weg) — PASS.
+
+**Zweiter Durchlauf — One-Pager (Playwright, 17 Checks, alle PASS):**
+0 Google-Requests, 5 Fonts mit 200, Title/Meta/JSON-LD korrekt,
+dim2 neu, mailto in legal-bar, **Cursor folgt Maus**, **Unlock via #ubtn
+→ body.open**, **alle 6 Karten → #cwrap.on**, Leer-Submit → Fehler inkl.
+DSGVO, Anhaken cleart Fehler, gültiger Submit (Formspree gestubbt,
+Payload geprüft), EN/DE-Umschalter inkl. übersetztem Checkbox-Label,
+0 fehlgeschlagene Requests, 0 JS-Fehler. Screenshots gesichtet.
 
 ## Ergebnisse
 
-- Punkt A erledigt: Construction-Page auf main hat vollständigen SEO-Head
-  (Meta, OG/Twitter mit funktionierendem og-image, JSON-LD ohne Platzhalter),
-  Self-hosted Fonts, Mobile-Performance-Tuning.
-- Zusatz: Sämtliche Seiten auf **beiden** Branches sind frei von
-  Google-Fonts-Requests (DSGVO).
-- Commits: main `1b0b06d`, `63dbae6` · staging `b514c34`, `81a18f2`
+- A–C, E, F, H, I erledigt. Beide Domains DSGVO-sauber (keine
+  Google-Requests auf keiner Seite), SEO-Head überall, Favicon live
+  (404 behoben), Kontrast WCAG AA, One-Pager mit DSGVO-Checkbox (de/en),
+  E-Mail vor Unlock erreichbar, Mobile-Partikelreduktion aktiv.
+- Kritische Funktionen (Cursor, Unlock, Karten, Kontakt-Reveal, Formular)
+  nach allen Änderungen automatisiert getestet — intakt.
+- Commits: main `1b0b06d`, `63dbae6`, `24de908` ·
+  staging `b514c34`, `81a18f2`, `e36a635`, `6dfb2e1`
 
 ## Offene Punkte
 
-- B, C, E–I aus dem Plan (One-Pager: SEO-Head, DSGVO-Checkbox, Nav-E-Mail,
-  A11y, Kontrast, Partikelreduktion, Favicon); D zurückgestellt
-- **Launch des One-Pagers auf main wartet** auf ein inhaltliches Rework
-  der Handlungsfelder (sechs Leistungsfelder) durch den User —
-  Punkt G (Karten-A11y) sinnvollerweise zusammen mit dem Rework umsetzen
+- **G (Karten-A11y)**: bewusst offen — wird mit dem geplanten
+  Handlungsfelder-Rework gebündelt
+- **D**: zurückgestellt (Terminbuchung entfällt; LinkedIn nur bei
+  nachgeliefertem Handle)
+- **Launch des One-Pagers auf main wartet** auf das inhaltliche Rework
+  der Handlungsfelder durch den User
 - Untracked Font-Formate (eot/svg/ttf/woff) ggf. löschen oder .gitignore

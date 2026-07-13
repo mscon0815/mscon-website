@@ -42,9 +42,9 @@ In `.cf` vor `.sbtn`:
 ```
 i18n-Pflege beachten (Prinzip 5).
 
-### D — LinkedIn + Kalender-Link (alt #8)
-`.cdet`: Rows „LinkedIn" + „Termin buchen" (cal.com). Platzhalter
-`DEIN-HANDLE` / `DEIN-CAL-LINK` beim User einholen.
+### D — LinkedIn + Kalender-Link (alt #8) ⏸ ZURÜCKGESTELLT
+User-Entscheidung 2026-07-13: **Terminbuchung entfällt** („Mail muss
+reichen"). LinkedIn-Row nur, falls der Handle später nachgeliefert wird.
 
 ### E — E-Mail im Nav sichtbar vor Unlock (alt #9)
 `mailto:`-Link nach `</ul>` in `nav` (gold, opacity .7→1 on hover).
@@ -129,7 +129,9 @@ zusätzlich Cursor + Unlock-Button manuell prüfen (kritische Funktionen).
 
 ## Offene Punkte
 
-- B–I aus dem Plan (One-Pager: SEO-Head, DSGVO-Checkbox, LinkedIn/Cal,
-  Nav-E-Mail, A11y, Kontrast, Favicon)
-- Platzhalter beim User einholen: LinkedIn-Handle, cal.com-Link
+- B, C, E–I aus dem Plan (One-Pager: SEO-Head, DSGVO-Checkbox, Nav-E-Mail,
+  A11y, Kontrast, Partikelreduktion, Favicon); D zurückgestellt
+- **Launch des One-Pagers auf main wartet** auf ein inhaltliches Rework
+  der Handlungsfelder (sechs Leistungsfelder) durch den User —
+  Punkt G (Karten-A11y) sinnvollerweise zusammen mit dem Rework umsetzen
 - Untracked Font-Formate (eot/svg/ttf/woff) ggf. löschen oder .gitignore

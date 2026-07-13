@@ -3,12 +3,61 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>MSCon — Coming Soon</title>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,700;0,9..144,900;1,9..144,200&family=DM+Sans:wght@200;300;400&family=JetBrains+Mono:wght@300&display=swap" rel="stylesheet">
+<title>MSCon | IT-Architektur &amp; Digitale Transformation – DACH</title>
+<meta name="description" content="IT-Architektur &amp; Digitale Transformation für den DACH-Raum. TOGAF ADM, arc42, Cloud-Strategie, Requirements Engineering — MSCon begleitet von der ersten Anforderung bis zur belastbaren Architektur.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://mscon.one/">
+<meta property="og:type"        content="website">
+<meta property="og:url"         content="https://mscon.one/">
+<meta property="og:title"       content="MSCon | IT-Architektur &amp; Digitale Transformation">
+<meta property="og:description" content="Komplexität entschlüsseln. Klarheit schaffen. Sechs Leistungsfelder – TOGAF, arc42, Cloud, Integration, Requirements, Review.">
+<meta property="og:image"       content="https://mscon.one/assets/og-image.jpg">
+<meta property="og:locale"      content="de_DE">
+<meta name="twitter:card"       content="summary_large_image">
+<meta name="twitter:title"      content="MSCon | IT-Architektur &amp; Digitale Transformation">
+<meta name="twitter:description" content="Komplexität entschlüsseln. Klarheit schaffen.">
+<meta name="twitter:image"      content="https://mscon.one/assets/og-image.jpg">
+<style>
+@font-face {
+  font-family: 'Fraunces';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('assets/fonts/fraunces/fraunces-v38-latin-700.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Fraunces';
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src: url('assets/fonts/fraunces/fraunces-v38-latin-900.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Fraunces';
+  font-style: italic;
+  font-weight: 200;
+  font-display: swap;
+  src: url('assets/fonts/fraunces/fraunces-v38-latin-200italic.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'DM Sans';
+  font-style: normal;
+  font-weight: 200 500;
+  font-display: swap;
+  src: url('assets/fonts/dm-sans/dm-sans-v17-latin-regular.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 300 400;
+  font-display: swap;
+  src: url('assets/fonts/jetbrains-mono/jetbrains-mono-v24-latin-300.woff2') format('woff2');
+}
+</style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
-:root{--bg:#070707;--gold:#E8A030;--red:#9B2335;--olive:#7A8C3A;--text:rgba(240,236,228,.92);--dim:rgba(240,236,228,.22);--dim2:rgba(240,236,228,.42);}
+:root{--bg:#070707;--gold:#E8A030;--red:#9B2335;--olive:#7A8C3A;--text:rgba(240,236,228,.92);--dim:rgba(240,236,228,.22);--dim2:rgba(240,236,228,.52);}
 html,body{height:100%;background:var(--bg);overflow:hidden;}
 canvas{position:fixed;inset:0;z-index:0;}
 #fog{position:fixed;inset:0;z-index:2;pointer-events:none;}
@@ -76,6 +125,26 @@ canvas{position:fixed;inset:0;z-index:0;}
 
 @keyframes fadein{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
 </style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "name": "MSCon",
+  "url": "https://mscon.one",
+  "email": "schultes@mscon.one",
+  "description": "IT-Architektur & Digitale Transformation für den DACH-Raum. TOGAF ADM, arc42, Cloud-Strategie, Requirements Engineering.",
+  "areaServed": ["DE", "AT", "CH"],
+  "serviceType": [
+    "IT-Architektur",
+    "Digitale Transformation",
+    "Cloud-Strategie",
+    "Requirements Engineering",
+    "Systemintegration",
+    "Architektur-Review"
+  ],
+  "knowsAbout": ["TOGAF", "arc42", "C4 Model", "Wardley Mapping", "ISO 25010", "DDD"]
+}
+</script>
 </head>
 <body>
 
@@ -90,7 +159,7 @@ canvas{position:fixed;inset:0;z-index:0;}
     </svg>
     <div class="orbit-dot"></div>
     <div id="logo-outer">
-      <div class="logo-wrap"><img src="assets/logo.png" alt="MSCon"></div>
+      <div class="logo-wrap"><img src="assets/logo.png" alt="MSCon Logo" width="100" height="100" loading="eager" decoding="async"></div>
     </div>
   </div>
   <div id="tagline"></div>
@@ -168,7 +237,8 @@ function setLang(lang) {
   var cam = new THREE.PerspectiveCamera(65, innerWidth / innerHeight, 0.1, 300);
   cam.position.z = 55;
 
-  var N = 2200, sg = new THREE.BufferGeometry();
+  var isMobile = window.innerWidth < 768;
+  var N = isMobile ? 700 : 2200, sg = new THREE.BufferGeometry();
   var sp = new Float32Array(N*3), sc = new Float32Array(N*3);
   var pal = [[.91,.627,.188],[.608,.137,.208],[.478,.549,.227],[.94,.925,.894],[.94,.925,.894],[.94,.925,.894]];
   for (var i = 0; i < N; i++) {
@@ -181,7 +251,7 @@ function setLang(lang) {
   sg.setAttribute('color', new THREE.BufferAttribute(sc, 3));
   scene.add(new THREE.Points(sg, new THREE.PointsMaterial({size:.18,vertexColors:true,transparent:true,opacity:.75})));
 
-  var M = 180, mg = new THREE.BufferGeometry();
+  var M = isMobile ? 60 : 180, mg = new THREE.BufferGeometry();
   var mp = new Float32Array(M*3), mc = new Float32Array(M*3);
   var mpal = [[.91,.627,.188],[.608,.137,.208],[.478,.549,.227],[.94,.925,.894]];
   var pts = [];

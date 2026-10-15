@@ -1,7 +1,7 @@
 # Tagline: „IT-Architektur" → „IT-Roadmap"
 
-Status: in Arbeit
-Branch/Commits: `fix/tagline-it-roadmap` (von `staging`) · tbd
+Status: umgesetzt ✅
+Branch/Commits: `fix/tagline-it-roadmap` (PR #1 → staging squash-merged `9418752`) · main direkt-Commit `80c2112`
 Projekt-ID: `PRJ-005` · Portfolio: `mscon/portfolio#5` (Forgejo, `forge.hs.home`)
 
 ## Kontext
@@ -48,7 +48,22 @@ Entscheidungen (grill-with-docs 2026-10-15):
 
 ## Umsetzung
 
-_(wird während der Ausführung fortgeschrieben)_
+1. ✅ Plan-Datei auf `fix/tagline-it-roadmap` angelegt
+2. ✅ Branch `fix/tagline-it-roadmap` von `origin/staging` erstellt
+3. ✅ `index.html` — 3 Zeilen auf `staging`:
+   - DOM Line 357 (sichtbarer Fallback-Text)
+   - JS `i18n.de.tagline` Line 944
+   - JS `i18n.en.tagline` Line 970
+4. ✅ Lokaler `python3 -m http.server 8765`, grep-Tests + i18n-Konsistenz-Check (45 Keys DE = 45 Keys EN)
+5. ✅ Commit `9418752` (Conventional, ohne Co-Authored-By — Projekt-Konvention)
+6. ✅ PR #1 → `staging` squash-merged, Branch gelöscht
+7. ✅ Cloudflare Pages auto-deploy → `staging.mscon.one` → **17:14 UTC live** (cf-ray `a4b07570…-FRA`)
+8. ✅ Owner-Freigabepunkt (visueller Check staging) — bestätigt
+9. ✅ Checkout `main`, 2 Zeilen in `index.html` ersetzt (nur JS-i18n DE+EN; main hat kein statisches DOM-Element für tagline)
+10. ✅ Commit `80c2112` direkt auf `main` (Fast-Forward Push)
+11. ✅ Cloudflare auto-deploy → `mscon.one` → **17:36 UTC live** (cf-ray `a4b09669…-FRA`, ~20 s nach Push)
+12. ✅ Portfolio-Issue-Kommentar `mscon/portfolio#5` (comment-ID 28)
+13. ✅ Status in dieser Datei auf „umgesetzt ✅"
 
 ## Tests
 
@@ -64,7 +79,28 @@ _(wird während der Ausführung fortgeschrieben)_
 
 ## Ergebnisse
 
-_(wird nach Live-Verifikation gefüllt — Commits, Live-URLs, Beobachtungen, Lessons Learned für Playbook-Destillation)_
+### Dateien & Commits
+- `index.html` auf `staging` (3 Zeilen) · Commit `9418752` · PR #1
+- `index.html` auf `main` (2 Zeilen) · Commit `80c2112`
+- `docs/plans/2026-10-15-tagline-it-roadmap.md` · Commit `9418752` (im Change-Branch), nachgezogen in `main` als separater Doku-Commit
+
+### Live-Verifikation (gecurlt, nicht nur gepingt)
+- `staging.mscon.one` — `tagline: 'IT-Roadmap · Digitale Transformation'` (DE) · `'IT Roadmap · Digital Transformation'` (EN)
+- `mscon.one` — identisch; Deploy ~20 s nach Push (schneller als „bis zu 3 min" aus CLAUDE.md angenommen)
+
+### Beobachtungen für den Playbook-Destillat
+1. **PR auf staging mit squash-merge, main dagegen direkt-Commit** — Grund: Construction-HTML (`main`) und One-Pager-HTML (`staging`) divergieren stark; ein Branch-Merge würde nicht sauber laufen. Pattern: *Cherry-pick der Semantik, nicht der Datei.*
+2. **grep-Baseline ≥ 10 unberührt** war der entscheidende Health-Check: ohne diesen hätte man übersehen können, dass Services/Footer/SEO gewollt stehen bleiben.
+3. **i18n DE-/EN-Key-Mengen-Vergleich** (CLAUDE.md §3) ist der automatische Fehlfang gegen die häufigste Fehlerquelle in diesem Projekt — gehört in jedes Textänderungs-Playbook.
+4. **Cloudflare-Deploy-Polling mit präzisem grep-Muster** (`id="tagline"` statt nur `tagline` — CSS-Zeile fängt sonst immer vorab) — Learning in diesem Lauf aufgenommen.
+5. **Attribution-Zeile projektseitig AUS** (CLAUDE.md §7) — gegensätzlich zu `homeserver-stack`, wo die Session Co-Authored-By verlangt. Pro Projekt entscheiden, nicht pauschal.
+6. **Mehrere laufende Sessions mit verschiedenen Scopes:** Token für Portfolio-Issue-Kommentar war `write:issue`-only, serverseitig in mode-600-Datei, nur temporär — nie durch stdout. Pattern für API-Operationen aus dem Chat.
+
+### Scope bewusst zurückgestellt (eigener Change, falls gewünscht)
+- SEO-Keyword-Shift („IT-Architektur" → „IT-Roadmap" in `<title>`, `<meta description>`, og/twitter, Schema.org `keywords`+`description`) — Business-Entscheidung mit SEO-Impact
+- Service-Katalog-Umbenennung („IT-Architektur & Design" als Bento-Card)
+- Firmenbezeichnung in Impressum/404-Footer („IT-Architektur & Digitale Transformation") — rechtlich relevant
+- `CLAUDE.md` dieses Projekts — reine Doku-Konsistenz
 
 ## Rollback
 
